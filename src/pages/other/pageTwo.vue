@@ -1,12 +1,10 @@
 <template>
-  <div>
-      this is userMange pages
-  </div>
+  <div>this is pageTwo</div>
 </template>
 
 <script>
 export default {
-  name:'userMange',
+
 }
 </script>
 

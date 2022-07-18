@@ -1,13 +1,16 @@
 <template>
   <div class="pHeader">
-    <el-button
-      :icon="buttonIcon"
-      circle
-      @click="hiddenAndDisplay(buttonIcon)"
-    ></el-button>
-
-    <h3>首页</h3>
-
+    <div class="l-content">
+      <el-button class="l-content-button"
+        :icon="buttonIcon"
+        circle
+        @click="hiddenAndDisplay(buttonIcon)"
+      ></el-button>
+      <!-- <h3>首页</h3> -->
+      <el-breadcrumb class='breadcrumb' separator="/">
+        <el-breadcrumb-item v-for="item in tags" :to="item.path" :key="item.path">{{item.label}}</el-breadcrumb-item>
+      </el-breadcrumb>
+    </div>
     <div class="r-content">
       <el-dropdown trigger="click" size="mini">
 
@@ -26,6 +29,7 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
@@ -40,13 +44,18 @@ export default {
       } else {
         this.buttonIcon = "el-icon-d-arrow-left";
       }
-    this.$bus.$emit("change")
+      this.$store.commit('collapse')
     },
   },
+  computed:{
+    ...mapState({
+      tags: state => state.tabsList
+    })
+  }
 };
 </script>
 
-<style>
+<style scoped>
 .h3 {
   color: #fff;
 }
@@ -56,18 +65,32 @@ export default {
     justify-content: space-between;
     align-items: center;
 }
+.l-content-button{
+  width:40px;
+  height: 40px;
+  margin-right: 0.5vw;
+}
+.l-content{
+  display: flex;
+}
 .r-content{
-  align-items: center;
+  padding-top: 20px;
+  line-height: 60px;
 }
-.user{
+/* .user{
   height:100%
-}
+} */
 .userI{
   width:40px;
   height:40px;
-  margin-top:20px;
   border-radius: 50%;
   background: #fff;
+}
+.el-breadcrumb /deep/ .el-breadcrumb__inner{
+  color: #fff !important;
+}
+.breadcrumb{
+  margin: auto 0;
 }
 
 </style>

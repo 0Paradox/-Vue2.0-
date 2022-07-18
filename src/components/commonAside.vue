@@ -4,13 +4,12 @@
     class="el-menu-vertical-demo"
     @open="handleOpen"
     @close="handleClose"
-    :collapse="isCollapse"
+    :collapse="$store.state.isCollapse"
     background-color="#545c64"
     text-color="#fff"
     active-text-color="#ffd04b"
   >
     <h3>通用后台管理系统</h3>
-
     <el-menu-item @click="clickMenu(item)" v-for="item in noChildren" :key="item.name" :index="item.name">
       <span slot="title">{{ item.label }}</span>
     </el-menu-item>
@@ -23,7 +22,7 @@
         v-for="(subItem) in item.children"
         :key="subItem.path"
       >
-        <el-menu-item>{{ subItem.label }}</el-menu-item>
+        <el-menu-item @click="clickMenu(subItem)" :index="subItem.toString()">{{ subItem.label }}</el-menu-item>
       </el-menu-item-group>
     </el-submenu>
   </el-menu>
@@ -49,7 +48,7 @@ export default {
           url: "mallManage/mallManage",
         },
         {
-          path: "/user",
+          path: "/userMange",
           name: "userMange",
           label: "用户管理",
           url: "userMange/userMange",
@@ -83,12 +82,10 @@ export default {
     handleClose(key, keyPath) {
       console.log(key, keyPath);
     },
-    change(){
-      this.isCollapse = !this.isCollapse
-    },
     clickMenu(index){
         // console.log("执行了clickMenu命令",this.$router)
         this.$router.push(index)
+        this.$store.commit('selectMenu',index)
     }
   },
   computed: {
@@ -99,12 +96,6 @@ export default {
       return this.menu.filter((item) => item.children);
 
     },
-  },
-  mounted(){
-    this.$bus.$on('change',this.change)
-  },
-  beforeDestroy() {
-    this.$bus.$off('change')
   },
 };
 

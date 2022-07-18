@@ -66,6 +66,7 @@
 import axios from 'axios'
 import * as echarts from 'echarts'
 export default {
+  name:'myHome',
   data() {
     return {
       userImg: require("../assets/logo.png"),
@@ -86,25 +87,37 @@ export default {
     }).then(res => {
       this.countData = res.data.countData
     })
+
     instance({
       url:'/permission/getline'
     }).then(res => {
       const option = res.data.options
       let lineChart = echarts.init(document.querySelector('.lineChart'))
-        option && lineChart.setOption(option)
+      window.onresize = function(){
+        lineChart.resize()
+      }
+      option && lineChart.setOption(option)
     })
+
     instance({
       url:'/permission/getBar'
     }).then(res => {
       const option = res.data.options
       let barChart = echarts.init(document.querySelector('#bar'))
+      window.onresize = function(){
+        barChart.resize()
+      }
       option && barChart.setOption(option)
     })
+
     instance({
       url:'/permission/getPie'
     }).then(res => {
       const option = res.data.options
       let pieChart = echarts.init(document.querySelector('#pie'))
+      window.onresize = function(){
+        pieChart.resize()
+      }
       option && pieChart.setOption(option)
     })
   },
